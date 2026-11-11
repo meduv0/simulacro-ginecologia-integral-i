@@ -3005,7 +3005,11 @@ transition-delay:0s!important;
     if(feedbackAllowed()){state.checked[q.id]=true;autoExpandPauta(q);}
   }
   function saveMatching(q){
-    updateQuestion(q);updateControls();save();if(scoreVisible)renderScore();
+    const update=()=>{
+      updateQuestion(q);updateControls();save();if(scoreVisible)renderScore();
+    };
+    if(feedbackAllowed()&&activeAnswers()[q.id]!==undefined)keepAnswerPosition(q,update);
+    else update();
   }
   function linkConcept(q,left,right){
     expireHardcore();
@@ -3648,12 +3652,12 @@ transition-delay:0s!important;
     const card=$('q-'+q.id);
     if(!card)return null;
     const selected=card.querySelector('.choices:not([hidden]) input[type="radio"]:checked');
-    return selected?.closest('.option')||card.querySelector('.cloze-title,.statement-direct,.matching-direct,.ordering-direct')||card;
+    return selected?.closest('.option')||card.querySelector('.cloze-gap,.statement-direct,.matching-direct,.ordering-direct')||card;
   }
-  function keepAnswerPosition(q,update){
-    const before=answerAnchor(q)?.getBoundingClientRect().top;
+  function keepAnswerPosition(q,update,anchor=()=>answerAnchor(q)){
+    const before=anchor()?.getBoundingClientRect().top;
     update();
-    const after=answerAnchor(q)?.getBoundingClientRect().top;
+    const after=anchor()?.getBoundingClientRect().top;
     if(before!==undefined&&after!==undefined&&Math.abs(after-before)>1){
       window.scrollBy({top:after-before,behavior:'instant'});
     }
@@ -3677,8 +3681,11 @@ transition-delay:0s!important;
     if(reveal) {
       const q = byId.get(reveal.dataset.reveal);
       if(!feedbackAllowed() || (activeAnswers()[q.id] === undefined && state.hardcore?.status!=='review')) return;
-      if(expanded.has(q.id)) expanded.delete(q.id); else expanded.add(q.id);
-      setExpanded(q,expanded.has(q.id)); updateControls(); return;
+      keepAnswerPosition(q,()=>{
+        if(expanded.has(q.id)) expanded.delete(q.id); else expanded.add(q.id);
+        setExpanded(q,expanded.has(q.id));updateControls();
+      },()=>reveal);
+      return;
     }
   });
   $('reset-button').addEventListener('click',() => {
