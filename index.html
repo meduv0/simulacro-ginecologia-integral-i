@@ -578,6 +578,7 @@ transition-delay:0s!important;
 .teaching-case-body ul { margin: .28em 0 0; padding-inline-start: 1.4em; }
 .teaching-case-exam { display: block; margin-top: .8em; }
 </style>
+<style id="pauta-scroll-anchor">.pauta{overflow-anchor:none}</style>
 <style id="question-variant-style">
 .question-variant-label {
   display: inline-block;
@@ -3643,15 +3644,33 @@ transition-delay:0s!important;
 
     updateControls(); updateClock(); if(scoreVisible)renderScore();else $('score-panel').hidden=true; save();
   }
+  function answerAnchor(q){
+    const card=$('q-'+q.id);
+    if(!card)return null;
+    const selected=card.querySelector('.choices:not([hidden]) input[type="radio"]:checked');
+    return selected?.closest('.option')||card.querySelector('.cloze-title,.statement-direct,.matching-direct,.ordering-direct')||card;
+  }
+  function keepAnswerPosition(q,update){
+    const before=answerAnchor(q)?.getBoundingClientRect().top;
+    update();
+    const after=answerAnchor(q)?.getBoundingClientRect().top;
+    if(before!==undefined&&after!==undefined&&Math.abs(after-before)>1){
+      window.scrollBy({top:after-before,behavior:'instant'});
+    }
+  }
   $('questions').addEventListener('change',event => {
     const input = event.target; if(input.type !== 'radio') return;
     const q = byId.get(input.name); if(!q||q.statementSelection) return;
     if(q.matching)delete activeLinks()[q.id];
     expireHardcore();if(state.marathon&&q.id!==marathonCurrent()?.id)return;if(inputsLocked() || (!state.hardcore && !state.marathon && activeAnswers()[q.id]!==undefined)){updateQuestion(q);return;}
-    activeAnswers()[q.id] = Number(input.value);
-    if(feedbackAllowed()){state.checked[q.id] = true; autoExpandPauta(q);}
-    updateQuestion(q); updateControls(); save();
-    if(scoreVisible)renderScore();
+    const commitAnswer=()=>{
+      activeAnswers()[q.id]=Number(input.value);
+      if(feedbackAllowed()){state.checked[q.id]=true;autoExpandPauta(q);}
+      updateQuestion(q);updateControls();save();
+      if(scoreVisible)renderScore();
+    };
+    if(state.marathon||state.hardcore)commitAnswer();
+    else keepAnswerPosition(q,commitAnswer);
   });
   $('questions').addEventListener('click',event => {
     const reveal = event.target.closest('[data-reveal]');
@@ -3847,8 +3866,11 @@ const opening15=createOpening15();
     const m=state.marathon;if(!m||m.phase!=='answer')return;
     const q=marathonCurrent();m.phase='review';m.remainingMs=0;m.deadline=0;m.paused=false;
     if(timedOut&&!m.timedOut.includes(q.id))m.timedOut.push(q.id);
-    expanded.clear();expanded.add(q.id);render();
-    const pauta=$('pauta-'+q.id);if(pauta){pauta.tabIndex=-1;pauta.focus({preventScroll:true});pauta.scrollIntoView({block:'start',behavior:'instant'});}
+    keepAnswerPosition(q,()=>{
+      expanded.clear();expanded.add(q.id);render();
+      const card=$('q-'+q.id);
+      if(card){card.tabIndex=-1;card.focus({preventScroll:true});}
+    });
   }
   function marathonNext(){
     const m=state.marathon;if(!m||m.phase!=='review')return;
