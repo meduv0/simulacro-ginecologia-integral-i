@@ -521,6 +521,13 @@ transition-delay:0s!important;
 }
 .pauta.pauta-deferred{min-height:220px}
 @media print{#questions>.question{content-visibility:visible!important;contain-intrinsic-size:none!important}}
+
+.view-actions #star-marathon-button{color:#76510b;background:#fbf2db;border-color:#d8bf83}
+.view-actions #star-marathon-button:hover:enabled{background:#f3e4b8;border-color:#a77826}
+.view-actions #star-marathon-button[aria-pressed="true"]{color:#fff8e7;background:#7a5617;border-color:#7a5617}
+[data-theme="dark"] .view-actions #star-marathon-button{color:#f2d58b;background:#3c3425;border-color:#7d693b}
+[data-theme="dark"] .view-actions #star-marathon-button:hover:enabled{background:#514126;border-color:#b29656}
+[data-theme="dark"] .view-actions #star-marathon-button[aria-pressed="true"]{color:#fff0bb;background:#655025;border-color:#ad8c4c}
 </style></head>
 <body>
 <section id="intro-screen" class="intro-screen" role="region" aria-label="Presentación de Ginecología Integral I">
@@ -533,7 +540,7 @@ transition-delay:0s!important;
 <noscript><p class="noscript">Este simulacro necesita JavaScript para mostrar las preguntas y corregir tus respuestas. Ábrelo en un navegador con JavaScript habilitado.</p></noscript>
 <div class="layout">
 <main id="contenido" tabindex="-1">
-<div class="view-head"><div class="view-actions"><button class="reset" id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button><button class="reset hardcore-toggle" id="hardcore-button" type="button">Modo hardcore</button><button class="reset" id="marathon-button" type="button" aria-pressed="false">Modo maratón</button><button class="reset random-toggle" id="shuffle-button" type="button" aria-pressed="false">Modo aleatorio</button><button class="reset" id="original-order-button" type="button" hidden>Volver al orden por temas</button><button class="reset" id="reset-button" type="button">Reiniciar vista</button></div></div>
+<div class="view-head"><div class="view-actions"><button class="reset" id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button><button class="reset hardcore-toggle" id="hardcore-button" type="button">Modo hardcore</button><button class="reset" id="marathon-button" type="button" aria-pressed="false">Modo maratón</button><button class="reset" id="star-marathon-button" type="button" aria-pressed="false" aria-label="Modo estrella">Modo ★</button><button class="reset random-toggle" id="shuffle-button" type="button" aria-pressed="false">Modo aleatorio</button><button class="reset" id="original-order-button" type="button" hidden>Volver al orden por temas</button><button class="reset" id="reset-button" type="button">Reiniciar vista</button></div></div>
 <details class="topic-picker"><summary>Qué practicar</summary><nav id="topic-filters" aria-label="Contenido para practicar"></nav></details><p id="bank-update-notice" class="bank-update-notice" hidden aria-hidden="true" style="display:none!important"></p>
 <div id="exam-clock" class="exam-clock" hidden><div><strong id="exam-label">Modo hardcore</strong><p id="exam-message"></p></div><span id="clock-time" class="clock-time" aria-label="Tiempo restante"></span></div>
 <div class="resume-row" id="resume-row" hidden><button id="resume-button" class="resume-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-3-5 3zM10 8h4M10 11h4"/></svg><span>Continuar donde quedaste</span><span id="resume-location" class="resume-location"></span></button></div>
@@ -544,7 +551,7 @@ transition-delay:0s!important;
 <footer class="footer"><p id="save-note">Tus respuestas se guardan en este navegador.</p><p>Incluye las preguntas seleccionadas del banco y ejercicios de práctica basados en los PPT de las clases.</p><p>Las pautas distinguen la clave del banco de los criterios actualizados cuando corresponde. Las diapositivas se pueden ampliar pulsándolas.</p><p>Archivo autónomo: preguntas, pautas e imágenes funcionan sin conexión. Los enlaces al material y fuentes externas requieren internet.</p></footer>
 </main></div>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-<dialog id="marathon-dialog" class="reset-dialog marathon-dialog" aria-labelledby="marathon-title"><form method="dialog"><h2 id="marathon-title">Modo maratón</h2><p id="marathon-scope"></p><p>Una pregunta por pantalla. Después de responder, o al agotarse su tiempo, aparece la pauta sin límite de tiempo. Avanza con Siguiente pregunta cuando termines de revisarla.</p><fieldset class="marathon-chapter-picker"><legend>Capítulos</legend><label class="marathon-all"><input id="marathon-all-chapters" type="checkbox"><span>Todos los capítulos</span></label><div class="marathon-chapters" id="marathon-chapters"></div></fieldset><p id="marathon-selection-message" class="marathon-selection-message" role="status" hidden>Selecciona al menos un capítulo para comenzar.</p><label class="marathon-field">Orden<select id="marathon-order"><option value="ordered">En orden</option><option value="random">Aleatorio</option></select></label><div class="marathon-fields"><label class="marathon-field">Para responder (segundos)<input id="marathon-answer-seconds" type="number" min="20" max="300" step="1" value="60" required></label></div><label class="marathon-field">Cantidad de preguntas<input id="marathon-count" type="number" min="1" max="1" step="1" value="1" required></label><p class="marathon-small">Aleatorio mezcla preguntas y alternativas. El reloj se usa solo para responder; las pautas no tienen cuenta regresiva. Al cambiar de pestaña o reabrir el archivo, el reloj queda en pausa. Este intento se guarda por separado de tus respuestas de práctica.</p><div class="dialog-buttons"><button class="reset" value="cancel" formnovalidate>Cancelar</button><button class="primary" id="marathon-start" value="start">Comenzar maratón</button></div></form></dialog><dialog id="marathon-exit-dialog" class="reset-dialog" aria-labelledby="marathon-exit-title"><h2 id="marathon-exit-title">¿Salir del maratón?</h2><p>Tus respuestas de práctica se conservarán y este intento se archivará como el último maratón. Si estabas respondiendo, el reloj queda en pausa mientras decides.</p><form method="dialog"><div class="dialog-buttons"><button class="reset" id="marathon-exit-cancel" value="cancel">Seguir en pausa</button><button class="primary" value="exit">Volver a práctica</button></div></form></dialog><dialog id="hardcore-dialog" class="reset-dialog" aria-labelledby="hardcore-title"><h2 id="hardcore-title">Modo hardcore</h2><div id="hardcore-description"></div><form method="dialog"><div class="dialog-buttons"><button class="reset" value="cancel">Cancelar</button><button class="primary" id="hardcore-confirm" value="confirm">Comenzar</button></div></form></dialog>
+<dialog id="marathon-dialog" class="reset-dialog marathon-dialog" aria-labelledby="marathon-title"><form method="dialog"><h2 id="marathon-title">Modo maratón</h2><p id="marathon-scope"></p><p>Una pregunta por pantalla. Después de responder, o al agotarse su tiempo, aparece la pauta sin límite de tiempo. Avanza con Siguiente pregunta cuando termines de revisarla.</p><fieldset class="marathon-chapter-picker"><legend>Capítulos</legend><label class="marathon-all"><input id="marathon-all-chapters" type="checkbox"><span>Todos los capítulos</span></label><div class="marathon-chapters" id="marathon-chapters"></div></fieldset><p id="marathon-selection-message" class="marathon-selection-message" role="status" hidden>Selecciona al menos un capítulo para comenzar.</p><label class="marathon-field">Orden<select id="marathon-order"><option value="ordered">En orden</option><option value="random">Aleatorio</option></select></label><div class="marathon-fields"><label class="marathon-field">Para responder (segundos)<input id="marathon-answer-seconds" type="number" min="20" max="300" step="1" value="60" required></label></div><label class="marathon-field">Cantidad de preguntas<input id="marathon-count" type="number" min="1" max="1" step="1" value="1" required></label><p class="marathon-small">Aleatorio mezcla preguntas y alternativas. El reloj se usa solo para responder; las pautas no tienen cuenta regresiva. Al cambiar de pestaña o reabrir el archivo, el reloj queda en pausa. Este intento se guarda por separado de tus respuestas de práctica.</p><div class="dialog-buttons"><button class="reset" value="cancel" formnovalidate>Cancelar</button><button class="primary" id="marathon-start" value="start">Comenzar maratón</button></div></form></dialog><dialog id="marathon-exit-dialog" class="reset-dialog" aria-labelledby="marathon-exit-title"><h2 id="marathon-exit-title">¿Salir del maratón?</h2><p>Tus respuestas de práctica se conservarán. Si estabas respondiendo, el reloj queda en pausa mientras decides.</p><form method="dialog"><div class="dialog-buttons"><button class="reset" id="marathon-exit-cancel" value="cancel">Seguir en pausa</button><button class="primary" value="exit">Volver a práctica</button></div></form></dialog><dialog id="hardcore-dialog" class="reset-dialog" aria-labelledby="hardcore-title"><h2 id="hardcore-title">Modo hardcore</h2><div id="hardcore-description"></div><form method="dialog"><div class="dialog-buttons"><button class="reset" value="cancel">Cancelar</button><button class="primary" id="hardcore-confirm" value="confirm">Comenzar</button></div></form></dialog>
 <dialog id="reset-dialog" class="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description"><h2 id="reset-title">Reiniciar esta vista</h2><p id="reset-description"></p><form method="dialog"><div class="dialog-buttons"><button type="submit" class="reset" value="cancel" autofocus>Conservar respuestas</button><button type="submit" class="primary" id="confirm-reset" value="reset">Reiniciar</button></div></form></dialog>
 </div>
 <dialog id="slide-dialog" class="slide-dialog" aria-labelledby="slide-view-title"><div class="slide-view-toolbar"><h2 id="slide-view-title">Diapositiva de referencia</h2><button id="slide-zoom" class="reset" type="button">Ampliar / ajustar</button><form method="dialog"><button class="reset">Cerrar</button></form></div><div class="slide-view-scroll"><img id="slide-view-image" alt=""></div></dialog>
@@ -564,6 +571,8 @@ transition-delay:0s!important;
   const topicNames = {};
   const topics = [...new Set(questions.map(q => q.topic))];
   const byId = new Map(questions.map(q => [q.id,q]));
+  function isOfficialQuestion(q){return q.origin_type==='bank'||q.origin_type==='teacher-ppt';}
+  const officialQuestions = questions.filter(isOfficialQuestion);
   const key = 'gine-integral-i-oficiales-2026-v1';
   const letters = 'ABCDEF';
   const $ = id => document.getElementById(id);
@@ -572,6 +581,7 @@ transition-delay:0s!important;
   function updateThemeButton(){const dark=document.documentElement.dataset.theme==='dark';setControlLabel('theme-toggle',dark?'Modo claro':'Modo oscuro',dark?'sun':'moon');$('theme-toggle').setAttribute('aria-pressed',String(dark));}
   updateThemeButton();
   setControlLabel('shuffle-button','Modo aleatorio','shuffle');
+  setControlLabel('marathon-button','Modo maratón','marathon');
   // Interpolar los colores reales de las superficies visibles, sin capturas ni superposición.
   let themeColorTimer=0;
   const themeColorScopes=new Set();
@@ -733,7 +743,7 @@ transition-delay:0s!important;
   function updateControls() {
     if(state.marathon){marathonControls();return;}
     $('hardcore-button').disabled=false;
-    $('marathon-button').disabled=!!state.hardcore;setControlLabel('marathon-button','Modo maratón','marathon');$('marathon-button').setAttribute('aria-pressed','false');
+    updateMarathonButtons();
     const group = visibleQuestions();
     const answered = group.filter(q => activeAnswers()[q.id] !== undefined).length;
     $('reset-button').disabled = !!state.hardcore || (answered === 0 && !group.some(q => expanded.has(q.id) || (q.matching && matchingAnswered(q)) || (q.ordering && orderingRecord(q).touched) || (q.statementSelection && statementRecord(q).touched)));
@@ -3323,7 +3333,7 @@ transition-delay:0s!important;
     paintTopic(card,q.topic);
     const top = node('div','q-top');
     const number = node('span','q-number','Pregunta '+position+(isRandomized() ? ' · '+name(q.topic) : ''));
-    if(q.origin_type === 'bank' || q.origin_type === 'teacher-ppt') {
+    if(isOfficialQuestion(q)) {
       const label = q.origin_type === 'bank' ? 'Pregunta original del banco' : 'Pregunta de la presentación';
       const star = node('span','q-official-star','★');
       star.title = label;
@@ -3473,13 +3483,13 @@ transition-delay:0s!important;
   function grade(answers,group=questions){const correct=[],incorrect=[],omitted=[];for(const q of group){if(answers[q.id]===undefined)omitted.push(q);else if(answerIsCorrect(q,answers[q.id]))correct.push(q);else incorrect.push(q);}return {correct,incorrect,omitted,total:group.length};}
   function renderScore(){
     const panel=$('score-panel'), answers=activeAnswers(), group=visibleQuestions(), result=grade(answers,group); panel.replaceChildren();panel.hidden=false;
-    const title=node('h2','','Puntaje final');title.id='score-title';panel.append(title);
+    const title=node('h2','',state.marathon?state.marathon.mode==='official'?'Resultado · Modo ★':'Resultado del maratón':'Puntaje final');title.id='score-title';panel.append(title);
     const totals=node('div','score-totals');
     for(const [label,value] of [['Correctas',result.correct.length+' / '+result.total],['Incorrectas',result.incorrect.length],['Omitidas',result.omitted.length],['Acierto',Math.round(result.correct.length/result.total*100)+'%']]){const p=node('p');p.append(node('strong','',value),document.createTextNode(label));totals.append(p);}panel.append(totals);
     const wrap=node('div','score-table-wrap'),table=node('table','score-table'),head=node('thead'),hr=node('tr');
     for(const label of ['Contenido','Correctas','Incorrectas','Omitidas','Total']){const th=node('th','',label);th.scope='col';hr.append(th);}head.append(hr);table.append(head);
     const body=node('tbody');for(const topic of topics.filter(t=>group.some(q=>q.topic===t))){const r=grade(answers,group.filter(q=>q.topic===topic)),tr=node('tr');paintTopic(tr,topic);const th=node('th','topic-cell',name(topic));th.scope='row';tr.append(th);for(const value of [r.correct.length,r.incorrect.length,r.omitted.length,r.total])tr.append(node('td','',value));body.append(tr);}table.append(body);wrap.append(table);panel.append(wrap);
-    const positions=new Map(group.map((q,i)=>[q.id,isRandomized()?i+1:q.number]));
+    const positions=new Map(group.map((q,i)=>[q.id,state.marathon||isRandomized()?i+1:q.number]));
     for(const [label,items] of [['Correctas',result.correct],['Incorrectas',result.incorrect],['Omitidas',result.omitted]]){
       const details=node('details','review-group');details.append(node('summary','',label+' ('+items.length+')'));const list=node('ul');
       for(const q of [...items].sort((a,b)=>positions.get(a.id)-positions.get(b.id))){const li=node('li','review-item'),link=node('a','','Pregunta '+positions.get(q.id)+' · '+name(q.topic)+': '+q.stem);link.href='#q-'+q.id;li.append(link);
@@ -3548,24 +3558,41 @@ const opening15=createOpening15();
 
   // Intento independiente: nunca escribe sobre la práctica ni el modo hardcore.
   let marathonSelectedTopics=new Set();
-  function marathonSelectedGroup(){return questions.filter(q=>marathonSelectedTopics.has(q.topic));}
+  let marathonSetupMode='all';
+  function marathonQuestionPool(mode){return mode==='official'?officialQuestions:questions;}
+  function marathonTopics(mode){return [...new Set(marathonQuestionPool(mode).map(q=>q.topic))];}
+  function marathonSelectedGroup(){return marathonQuestionPool(marathonSetupMode).filter(q=>marathonSelectedTopics.has(q.topic));}
+  function updateMarathonButtons(){
+    for(const [id,mode] of [['marathon-button','all'],['star-marathon-button','official']]){
+      const button=$(id),active=state.marathon?.mode===mode;
+      button.disabled=!!state.hardcore||!!state.marathon&&!active||(mode==='official'&&!officialQuestions.length);
+      button.setAttribute('aria-pressed',String(active));
+    }
+  }
+  function marathonPhaseLabel(m){
+    if(m.mode==='official')return m.phase==='done'?'Modo ★ finalizado':m.paused?'Modo ★ en pausa':m.phase==='answer'?'★ · Responde':'★ · Pauta';
+    return m.phase==='done'?'Maratón finalizado':m.paused?'Maratón en pausa':m.phase==='answer'?'Responde':'Pauta';
+  }
   function syncMarathonSelection(resetCount=false){
     const total=marathonSelectedGroup().length,count=$('marathon-count'),priorMax=Number(count.max),priorValue=Number(count.value);
-    $('marathon-all-chapters').checked=marathonSelectedTopics.size===topics.length;
-    $('marathon-all-chapters').indeterminate=marathonSelectedTopics.size>0&&marathonSelectedTopics.size<topics.length;
+    const available=marathonTopics(marathonSetupMode);
+    $('marathon-all-chapters').checked=available.length>0&&marathonSelectedTopics.size===available.length;
+    $('marathon-all-chapters').indeterminate=marathonSelectedTopics.size>0&&marathonSelectedTopics.size<available.length;
     for(const input of $('marathon-chapters').querySelectorAll('input'))input.checked=marathonSelectedTopics.has(input.dataset.topic);
     count.max=String(total);count.disabled=total===0;
     count.value=String(resetCount||priorValue===priorMax||!Number.isFinite(priorValue)||priorValue<1?total:Math.min(Math.floor(priorValue),total));
     $('marathon-start').disabled=total===0;
     $('marathon-selection-message').hidden=total>0;
-    const scope=marathonSelectedTopics.size===topics.length?'Todos los capítulos':marathonSelectedTopics.size+' capítulo'+(marathonSelectedTopics.size===1?'':'s');
-    $('marathon-scope').textContent=scope+' · '+total+' pregunta'+(total===1?'':'s')+' disponible'+(total===1?'':'s');
+    const scope=marathonSelectedTopics.size===available.length?'Todos los capítulos':marathonSelectedTopics.size+' capítulo'+(marathonSelectedTopics.size===1?'':'s');
+    const unit=marathonSetupMode==='official'?(total===1?' pregunta oficial':' preguntas oficiales'):(total===1?' pregunta disponible':' preguntas disponibles');
+    $('marathon-scope').textContent=scope+' · '+total+unit;
   }
   function renderMarathonChapters(){
-    const list=$('marathon-chapters');list.replaceChildren();
-    for(const topic of topics){
+    const list=$('marathon-chapters'),pool=marathonQuestionPool(marathonSetupMode);list.replaceChildren();
+    for(const topic of marathonTopics(marathonSetupMode)){
       const label=node('label','marathon-chapter'),input=node('input');input.type='checkbox';input.dataset.topic=topic;input.checked=marathonSelectedTopics.has(topic);input.setAttribute('aria-label',name(topic));
-      const count=node('span','marathon-chapter-count',questions.filter(q=>q.topic===topic).length+' preguntas');count.setAttribute('aria-hidden','true');
+      const total=pool.filter(q=>q.topic===topic).length;
+      const count=node('span','marathon-chapter-count',total+(total===1?' pregunta':' preguntas'));count.setAttribute('aria-hidden','true');
       input.addEventListener('change',()=>{if(input.checked)marathonSelectedTopics.add(topic);else marathonSelectedTopics.delete(topic);syncMarathonSelection();});
       label.append(input,node('span','marathon-chapter-name',name(topic)),count);list.append(label);
     }
@@ -3574,13 +3601,14 @@ const opening15=createOpening15();
   function marathonOwner(){return state.marathon||null;}
   function marathonGroup(){return state.marathon.questionOrder.map(id=>byId.get(id));}
   function marathonCurrent(){const m=state.marathon;return m?byId.get(m.questionOrder[m.index]):null;}
-  function validMarathonOrder(order){return Array.isArray(order)&&order.length>0&&order.length<=questions.length&&new Set(order).size===order.length&&order.every(id=>byId.has(id));}
+  function validMarathonOrder(order,mode){return Array.isArray(order)&&order.length>0&&order.length<=questions.length&&new Set(order).size===order.length&&order.every(id=>byId.has(id)&&(mode!=='official'||isOfficialQuestion(byId.get(id))));}
   function restoreMarathon(saved){
-    if(validMarathonOrder(saved?.lastMarathon?.questionOrder))state.lastMarathon=saved.lastMarathon;
+    const previous=saved?.lastMarathon;
+    if(validMarathonOrder(previous?.questionOrder,previous?.mode))state.lastMarathon=previous;
     const m=saved?.marathon;
-    if(!m||!validMarathonOrder(m.questionOrder)||!['answer','review','done'].includes(m.phase)||!Number.isInteger(m.index)||m.index<0||m.index>=m.questionOrder.length)return;
+    if(!m||!validMarathonOrder(m.questionOrder,m.mode)||!['answer','review','done'].includes(m.phase)||!Number.isInteger(m.index)||m.index<0||m.index>=m.questionOrder.length)return;
     if(!Number.isFinite(m.answerSeconds)||m.answerSeconds<20||m.answerSeconds>300)return;
-    const copy={...m,answers:{},links:{},sequences:{},optionOrders:{},paused:m.phase==='answer',remainingMs:m.phase==='answer'?Math.min(Math.max(Number(m.remainingMs)||0,0),m.answerSeconds*1000):0};
+    const copy={...m,mode:m.mode==='official'?'official':'all',answers:{},links:{},sequences:{},optionOrders:{},paused:m.phase==='answer',remainingMs:m.phase==='answer'?Math.min(Math.max(Number(m.remainingMs)||0,0),m.answerSeconds*1000):0};
     if(copy.phase!=='answer')copy.deadline=0;
     for(const id of m.questionOrder){
       const q=byId.get(id),a=m.answers?.[id],order=m.optionOrders?.[id];
@@ -3593,13 +3621,15 @@ const opening15=createOpening15();
   }
   function marathonBegin(settings={}){
     if(state.hardcore||state.marathon)return false;
-    const selectedTopics=Array.isArray(settings.chapters)?topics.filter(topic=>settings.chapters.includes(topic)):null;
-    const group=selectedTopics?questions.filter(q=>selectedTopics.includes(q.topic)):visibleQuestions();
+    const mode=settings.mode==='official'?'official':'all';
+    const selectedTopics=Array.isArray(settings.chapters)?marathonTopics(mode).filter(topic=>settings.chapters.includes(topic)):null;
+    const pool=selectedTopics?marathonQuestionPool(mode):mode==='official'?officialQuestions:visibleQuestions();
+    const group=selectedTopics?pool.filter(q=>selectedTopics.includes(q.topic)):pool;
     if(!group.length)return false;
     const random=settings.order==='random',count=Math.max(1,Math.min(group.length,Math.floor(Number(settings.count)||group.length)));
     const ordered=[...group].sort((a,b)=>a.number-b.number),selected=(random?shuffle(ordered):ordered).slice(0,count);
     const answerSeconds=Math.max(20,Math.min(300,Math.round(Number(settings.answerSeconds)||60)));
-    state.marathon={phase:'answer',order:random?'random':'ordered',selectedTopics:selectedTopics||topics.filter(topic=>group.some(q=>q.topic===topic)),questionOrder:selected.map(q=>q.id),optionOrders:Object.fromEntries(selected.map(q=>[q.id,random?shuffle(q.options.map((_,i)=>i)):q.options.map((_,i)=>i)])),answers:{},links:{},sequences:{},index:0,answerSeconds,remainingMs:answerSeconds*1000,deadline:Date.now()+answerSeconds*1000,paused:false,startedAt:Date.now(),timedOut:[],reviewIndex:null};
+    state.marathon={mode,phase:'answer',order:random?'random':'ordered',selectedTopics:selectedTopics||topics.filter(topic=>group.some(q=>q.topic===topic)),questionOrder:selected.map(q=>q.id),optionOrders:Object.fromEntries(selected.map(q=>[q.id,random?shuffle(q.options.map((_,i)=>i)):q.options.map((_,i)=>i)])),answers:{},links:{},sequences:{},index:0,answerSeconds,remainingMs:answerSeconds*1000,deadline:Date.now()+answerSeconds*1000,paused:false,startedAt:Date.now(),timedOut:[],reviewIndex:null};
     scoreVisible=false;expanded.clear();render();marathonFocus();return true;
   }
   function marathonFocus(){const bar=$('marathon-bar');bar?.focus({preventScroll:true});$('contenido').scrollIntoView({block:'start',behavior:'instant'});}
@@ -3630,7 +3660,7 @@ const opening15=createOpening15();
     else{m.paused=false;m.deadline=Date.now()+m.remainingMs;}
     const pause=$('marathon-pause');if(pause)pause.textContent=m.paused?'Continuar':'Pausar';
     const note=$('marathon-paused-note');if(note)note.hidden=!m.paused;
-    const kicker=$('marathon-bar')?.querySelector('.marathon-kicker');if(kicker)kicker.textContent=m.paused?'Maratón en pausa':m.phase==='answer'?'Responde':'Pauta';
+    const kicker=$('marathon-bar')?.querySelector('.marathon-kicker');if(kicker)kicker.textContent=marathonPhaseLabel(m);
     updateQuestion(marathonCurrent());marathonClock();save();
   }
   function marathonClock(){
@@ -3645,7 +3675,7 @@ const opening15=createOpening15();
     const m=state.marathon;if(!m)return;
     for(const id of ['shuffle-button','reset-button','hardcore-button','original-order-button'])$(id).disabled=true;
     for(const b of $('topic-filters').querySelectorAll('button'))b.disabled=true;
-    setControlLabel('marathon-button','Modo maratón','marathon');$('marathon-button').setAttribute('aria-pressed','true');
+    updateMarathonButtons();
     $('score-button').disabled=false;$('score-hint').textContent='';$('exam-clock').hidden=true;
     if(m.phase==='answer'&&m.answers[marathonCurrent().id]!==undefined)marathonReview(false);
   }
@@ -3654,7 +3684,7 @@ const opening15=createOpening15();
     document.body.classList.add('marathon-on');renderTopicFilters();
     const container=$('questions');for(const old of container.querySelectorAll('.matching-direct'))old.matchingObserver?.disconnect();container.replaceChildren();
     const bar=$('marathon-bar');bar.hidden=false;bar.replaceChildren();bar.tabIndex=-1;
-    const meta=node('div','marathon-meta'),phase=m.phase==='done'?'Maratón finalizado':m.paused?'Maratón en pausa':m.phase==='answer'?'Responde':'Pauta';
+    const meta=node('div','marathon-meta'),phase=marathonPhaseLabel(m);
     meta.append(node('span','marathon-kicker',phase),node('strong','marathon-position',m.phase==='done'?m.questionOrder.length+' pregunta'+(m.questionOrder.length==1?'':'s'):(m.index+1)+' / '+m.questionOrder.length));
     const clock=node('span','marathon-time');clock.id='marathon-time';
     const actions=node('div','marathon-actions'),pause=node('button','reset',m.paused?'Continuar':'Pausar'),exit=node('button','reset','Salir');pause.id='marathon-pause';pause.type=exit.type='button';pause.hidden=m.phase!=='answer';pause.addEventListener('click',()=>marathonPause());exit.addEventListener('click',marathonExitDialog);actions.append(pause,exit);
@@ -3672,21 +3702,27 @@ const opening15=createOpening15();
         const nav=node('div','marathon-review-nav');for(const [label,step]of [['← Anterior',-1],['Siguiente →',1]]){const b=node('button','reset',label);b.type='button';b.disabled=m.reviewIndex+step<0||m.reviewIndex+step>=m.questionOrder.length;b.addEventListener('click',()=>{m.reviewIndex+=step;render();marathonFocus();});nav.append(b);}container.append(nav);
       }
     }
-    if(m.phase==='done'){renderScore();$('score-panel').querySelector('h2').textContent='Resultado del maratón';}else $('score-panel').hidden=true;
+    if(m.phase==='done')renderScore();else $('score-panel').hidden=true;
     marathonControls();marathonClock();save();return true;
   }
   function marathonExitDialog(){
-    const m=state.marathon;if(!m)return;marathonPause(true);$('marathon-exit-cancel').textContent=m.phase==='answer'?'Seguir en pausa':m.phase==='review'?'Volver a la pauta':'Conservar resultado';$('marathon-exit-dialog').returnValue='';$('marathon-exit-dialog').showModal();
+    const m=state.marathon;if(!m)return;marathonPause(true);$('marathon-exit-title').textContent=m.mode==='official'?'¿Salir del Modo ★?':'¿Salir del maratón?';$('marathon-exit-cancel').textContent=m.phase==='answer'?'Seguir en pausa':m.phase==='review'?'Volver a la pauta':'Conservar resultado';$('marathon-exit-dialog').returnValue='';$('marathon-exit-dialog').showModal();
   }
-  function openMarathonSetup(){
+  function openMarathonSetup(mode){
     if(state.hardcore)return;if(state.marathon){marathonFocus();return;}
-    marathonSelectedTopics=new Set(activeTopic==='all'?topics:[activeTopic]);renderMarathonChapters();$('marathon-dialog').returnValue='';$('marathon-dialog').showModal();
+    marathonSetupMode=mode;
+    const available=marathonTopics(mode);
+    marathonSelectedTopics=new Set(mode==='official'||activeTopic==='all'?available:[activeTopic]);
+    $('marathon-title').textContent=mode==='official'?'Modo ★':'Modo maratón';
+    $('marathon-start').textContent=mode==='official'?'Comenzar':'Comenzar maratón';
+    renderMarathonChapters();$('marathon-dialog').returnValue='';$('marathon-dialog').showModal();
   }
-  $('marathon-all-chapters').addEventListener('change',()=>{marathonSelectedTopics=new Set($('marathon-all-chapters').checked?topics:[]);syncMarathonSelection();});
-  $('marathon-button').addEventListener('click',openMarathonSetup);
+  $('marathon-all-chapters').addEventListener('change',()=>{marathonSelectedTopics=new Set($('marathon-all-chapters').checked?marathonTopics(marathonSetupMode):[]);syncMarathonSelection();});
+  $('marathon-button').addEventListener('click',()=>openMarathonSetup('all'));
+  $('star-marathon-button').addEventListener('click',()=>openMarathonSetup('official'));
   $('marathon-dialog').addEventListener('close',()=>{
     if($('marathon-dialog').returnValue!=='start')return;
-    marathonBegin({chapters:[...marathonSelectedTopics],order:$('marathon-order').value,answerSeconds:$('marathon-answer-seconds').value,count:$('marathon-count').value});
+    marathonBegin({mode:marathonSetupMode,chapters:[...marathonSelectedTopics],order:$('marathon-order').value,answerSeconds:$('marathon-answer-seconds').value,count:$('marathon-count').value});
   });
   $('marathon-exit-dialog').addEventListener('close',()=>{
     if($('marathon-exit-dialog').returnValue!=='exit')return;
